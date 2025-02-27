@@ -1,6 +1,3 @@
-# CVPR2023 Project Page
-
-```_config.yml``` : github webpage temp setting
-* theme: jekyll-theme-minimal
-
-```index.md``` : home page
+# Genesis Tutorials
+## Introduction
+* [Basic Functionality Overview](https://drive.google.com/uc?export=view&id=13z-0g_yIMiVf13cI5FVRi8hALRJrjJWC)

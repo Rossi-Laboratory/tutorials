@@ -1,0 +1,5 @@
+scene:
+  name: slope
+  terrain_type: inclined_plane
+  friction: 1.0
+  slope: 15.0

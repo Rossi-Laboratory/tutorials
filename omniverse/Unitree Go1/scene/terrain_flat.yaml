@@ -1,0 +1,5 @@
+scene:
+  name: flat
+  terrain_type: box
+  friction: 1.0
+  slope: 0.0

@@ -1,0 +1,5 @@
+scene:
+  name: uneven
+  terrain_type: noise_heightfield
+  amplitude: 0.05
+  frequency: 1.5

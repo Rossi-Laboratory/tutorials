@@ -1,0 +1,5 @@
+scene:
+  name: gap
+  terrain_type: platform_gap
+  gap_width: 0.2
+  platform_length: 0.5

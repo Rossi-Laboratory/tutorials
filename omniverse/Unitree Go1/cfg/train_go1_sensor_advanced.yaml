@@ -1,0 +1,23 @@
+env:
+  use_goal_input: true
+  reward_weights:
+    goal_velocity: 1.0
+    energy: 0.01
+  curriculum:
+    enable: true
+    steps: [5000, 15000]
+  randomization:
+    enable: true
+    mass: [0.95, 1.05]
+    friction: [0.6, 1.4]
+    motor_latency: [0.002, 0.015]
+    torque_limit: [0.8, 1.2]
+    sensor_noise:
+      accel_std: 0.05
+      gyro_std: 0.01
+  scene_name: uneven
+features:
+  obs_normalization: true
+  action_smooth_penalty: true
+  residual_control: false
+  observation_history: false

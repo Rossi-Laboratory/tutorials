@@ -1,0 +1,5 @@
+scene:
+  name: steps
+  terrain_type: discrete_steps
+  step_height: 0.08
+  step_spacing: 0.3

@@ -1,0 +1,5 @@
+scene:
+  name: soft
+  terrain_type: deformable_surface
+  softness: 0.6
+  damping: 0.3

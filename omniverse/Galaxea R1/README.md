@@ -2,7 +2,7 @@
 
 This repository hosts the complete AI robotics framework for **Galaxea R1**, supporting both manipulation and navigation capabilities across simulated and real-world environments.
 
-<img src="https://drive.google.com/uc?export=view&id=1gTnXAWQc0l23QMVDtq0cwAXuArTFaJSd" width="300"/>
+<img src="https://drive.google.com/uc?export=view&id=1gTnXAWQc0l23QMVDtq0cwAXuArTFaJSd" width="600"/>
 
 ---
 

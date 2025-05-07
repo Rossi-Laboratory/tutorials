@@ -3,6 +3,10 @@
 
 A full reinforcement learning and real-world deployment framework for retraining Unitree Go1 locomotion under center-of-mass (COM) shift. Includes PyTorch PPO training, observation normalization, COM curriculum, energy-aware reward, and full ROS2 bridge for Jetson deployment.
 
+<img src="https://drive.google.com/uc?export=view&id=1GJj_VvytgyT4f27170Y_cVf_aBxGbvaJ" width="600"/>
+
+---
+
 ## ✅ Jetson ROS2 Deployment Guide
 
 ### 1. Environment Setup

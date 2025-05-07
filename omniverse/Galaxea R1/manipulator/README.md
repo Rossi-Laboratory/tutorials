@@ -1,5 +1,3 @@
-# README.md
-
 # Galaxea R1 Manipulation Benchmark Suite
 
 This benchmark suite provides a full-stack pipeline for learning robotic manipulation using the Galaxea R1 manipulator in simulation and Sim2Real contexts. The system is built upon NVIDIA Isaac Lab, and integrates curriculum learning, task switching, ROS 2 deployment, and ONNX-based inference. It is suitable for academic research, industrial prototyping, and real-robot transfer learning.

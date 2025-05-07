@@ -1,0 +1,1 @@
+def compute_reward(agent): return -10 if agent.collided else 0.1

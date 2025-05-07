@@ -1,0 +1,1 @@
+def compute_reward(agent, object_label): return 1.0 if agent.near(object_label) else 0.0

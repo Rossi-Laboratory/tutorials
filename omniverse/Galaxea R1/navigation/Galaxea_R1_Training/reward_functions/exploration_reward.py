@@ -1,0 +1,1 @@
+def compute_reward(agent): return agent.new_area_discovered * 10

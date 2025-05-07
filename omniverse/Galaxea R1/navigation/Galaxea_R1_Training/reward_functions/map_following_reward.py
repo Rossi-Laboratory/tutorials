@@ -1,0 +1,1 @@
+def compute_reward(agent, path): return 1.0 if agent.on_path else -1.0

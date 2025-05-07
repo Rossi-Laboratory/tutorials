@@ -1,0 +1,1 @@
+def compute_reward(agent, goal): return -1.0

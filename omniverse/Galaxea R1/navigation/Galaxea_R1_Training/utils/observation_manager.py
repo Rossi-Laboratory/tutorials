@@ -1,0 +1,1 @@
+# Selectively constructs observation vector

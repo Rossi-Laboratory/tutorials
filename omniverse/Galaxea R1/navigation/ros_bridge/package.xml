@@ -1,0 +1,11 @@
+<package format="3">
+  <name>ros_bridge</name>
+  <version>0.1.0</version>
+  <description>Bridge node for Galaxea R1 Navigation</description>
+  <maintainer email="dev@example.com">Galaxea Dev</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+</package>

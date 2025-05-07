@@ -1,0 +1,1 @@
+def compute_reward(agent, goals): return sum(agent.reached(g) for g in goals)

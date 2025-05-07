@@ -1,0 +1,1 @@
+# Reward function for Peg-in-Hole

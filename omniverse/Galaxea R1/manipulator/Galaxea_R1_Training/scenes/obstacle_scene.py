@@ -1,0 +1,1 @@
+# Adds obstacles in workspace

@@ -1,0 +1,1 @@
+# Runs ONNX inference inside ROS 2 node

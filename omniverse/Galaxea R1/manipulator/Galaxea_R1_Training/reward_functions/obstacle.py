@@ -1,0 +1,1 @@
+# Reward function for Obstacle-Aware Reach

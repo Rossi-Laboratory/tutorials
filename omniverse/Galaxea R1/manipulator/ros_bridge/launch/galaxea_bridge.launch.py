@@ -1,0 +1,1 @@
+# ROS 2 launch file for manipulator bridge

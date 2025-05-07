@@ -1,63 +1,108 @@
-# Galaxea R1 Manipulation Benchmark Suite – Technical White Paper (v2)
+# Galaxea R1 Manipulation Benchmark Suite – Technical White Paper
 
 ## 1. Introduction
 
-The Galaxea R1 Manipulation Suite addresses the challenges of robotic skill acquisition through curriculum learning, modular reward shaping, and Sim2Real deployment. It offers a structured benchmark for evaluating policy learning in industrial and household scenarios.
+Robotic manipulation remains one of the grand challenges in modern robotics. Developing systems that can perform dexterous and generalizable manipulation tasks is critical for applications in manufacturing, service robotics, and warehouse automation. This work presents the Galaxea R1 Manipulation Benchmark Suite — a modular, curriculum-based framework for training, evaluating, and deploying robotic policies on a 6-DoF manipulator using NVIDIA Isaac Lab and ROS 2. The benchmark includes 9 progressively difficult tasks, support for Sim2Real deployment via ONNX, and tools for dataset collection, explainability, and benchmarking.
 
 ## 2. System Architecture
 
-The architecture consists of a training pipeline in Isaac Lab and a deployment pipeline in ROS2 with ONNX inference. Components include task configs, scene scripts, PPO training engine, curriculum manager, ROS2 nodes, and real robot drivers.
+The suite consists of modular components built on Isaac Lab, a high-performance simulation platform powered by Omniverse. The pipeline includes:
+
+- **Task Definition**: Modular YAML configs with observation, action, and reward setups
+- **Training Loop**: PPO agent integrated with curriculum manager
+- **Scene Configuration**: Python-based procedural scene setup
+- **Deployment Stack**: ONNX model export + ROS 2 policy bridge
+- **Logging**: TensorBoard, checkpoint, and dataset modules
+
+```mermaid
+graph TD
+A[Task Config] --> B[Isaac Lab Env]
+B --> C[PPO Trainer]
+C --> D[Trained Policy]
+D --> E[ONNX Export]
+E --> F[ROS2 Inference Node]
+```
 
 ## 3. Task Curriculum
 
-The suite includes 9 tasks arranged by complexity:
-1. Reach
-2. Grasp
-3. Place
-4. Stack
-5. Obstacle Reach
-6. Peg-in-Hole
-7. Drawer Opening
-8. Tool Use
-9. Object Sorting
+| Stage | Task                   | Description                               |
+|-------|------------------------|-------------------------------------------|
+| 1     | Reach                 | Move EE to cube                           |
+| 2     | Grasp                 | Grasp cube with gripper                   |
+| 3     | Place                 | Place cube in goal zone                   |
+| 4     | Stack                 | Stack cube on another cube                |
+| 5     | Obstacle Reach        | Reach with static obstacle avoidance      |
+| 6     | Peg-in-Hole           | Align peg and insert into socket          |
+| 7     | Drawer Opening        | Pull drawer open with contact             |
+| 8     | Tool Use              | Use stick to push cube                    |
+| 9     | Object Sorting        | Sort cubes into bins based on type        |
 
-Each task builds on the previous, with reward functions and success conditions encoded modularly.
+Each stage builds upon the skills of the previous one, enabling curriculum learning and progressive policy refinement.
 
 ## 4. Reward Design
 
-Rewards are shaped by distance, contact, success flags, and multi-stage bonuses. Tasks like stack, drawer, and tool use require event-triggered rewards and temporal credit assignment.
+Each task uses a domain-specific reward function that shapes the learning landscape:
 
-## 5. Training Setup & Hyperparameters
+- **Reach**: Reward decreases with distance from cube
+- **Grasp**: Adds +1 for successful lift
+- **Place/Stack**: Adds +1 or +2 for location matching
+- **Obstacle Reach**: Penalizes collision
+- **Peg-in-Hole**: Requires sub-cm alignment for +2 bonus
+- **Drawer**: Rewards pulling past threshold
+- **Tool Use**: Rewards object displacement
+- **Sorting**: Reward based on bin correctness
 
-- PPO with GAE (lambda=0.95), Adam (lr=3e-4)
-- Observation space: EE pos, joint states, cube state
-- Action space: 6-DoF + 1 gripper
-- Episode length: 250–300 steps
-- Curriculum auto-switches on threshold success rate
+Success is defined per task using Euclidean thresholds or discrete flags (`cube_lifted`, `drawer_open`).
+
+## 5. Training Setup and Hyperparameters
+
+Training is conducted using PPO with curriculum switching:
+
+- **Observation Space**: `ee_position`, `joint_state`, `cube_position`, etc.
+- **Action Space**: 6 joint angles + 1 gripper width (7D total)
+- **Optimizer**: Adam (lr = 3e-4)
+- **Steps/Epoch**: 8192
+- **Discount**: gamma = 0.99, GAE lambda = 0.95
+- **Early Stop**: Reward-based
+- **Reset Conditions**: Time limit, success, failure
+
+Simulation uses Isaac Lab (USD-based physics) with 200Hz control and randomized spawn states.
 
 ## 6. Benchmark Results
 
-| Task             | PPO SR | Rule |
-|------------------|--------|------|
-| Reach            | 100%   | 85%  |
-| Grasp            | 98%    | 60%  |
-| Place            | 95%    | 40%  |
-| Stack            | 89%    | —    |
-| Peg-in-Hole      | 75%    | —    |
-| Drawer Opening   | 80%    | —    |
-| Tool Use         | 65%    | —    |
-| Sorting          | 78%    | —    |
+| Task             | PPO Success Rate | Rule-Based |
+|------------------|------------------|------------|
+| Reach            | 100%             | 85%        |
+| Grasp            | 98%              | 60%        |
+| Place            | 95%              | 40%        |
+| Stack            | 89%              | —          |
+| Peg-in-Hole      | 75%              | —          |
+| Drawer Opening   | 80%              | —          |
+| Tool Use         | 65%              | —          |
+| Sorting          | 78%              | —          |
+
+Qualitative rollout visualizations and ONNX saliency maps show policy generalization and robustness.
 
 ## 7. Sim2Real Deployment
 
-The ROS2 bridge enables policy execution in real-time on Galaxea R1 via:
-- ONNX model inference node
-- Gripper control integration
-- Joint position publishers
-- State feedback for task progression
+The trained policies are deployed using:
 
-## 8. Conclusion & Outlook
+- **ONNX Export**: Torch → ONNX (7D input/output)
+- **ROS 2 Bridge**: Policy node subscribing to joint state
+- **Galaxea Driver**: Mock hardware interface for command feedback
+- **Real-time Control**: ROS2 loop + gripper command
 
-The suite enables end-to-end robotic skill training, from simulation to hardware, through task curriculum and modular design. Future work includes VLM-based generalization, multi-agent collaboration, and hierarchical skill composition.
+This enables drop-in deployment for real Galaxea R1 or Unitree manipulator platforms.
 
-MIT Licensed. Contact authors for collaboration.
+## 8. Conclusion
+
+The Galaxea R1 benchmark suite provides a complete stack for robotic learning research and deployment. Its modular curriculum design enables incremental skill acquisition. The ROS2 bridge and ONNX deployment pipeline supports direct transfer to physical hardware.
+
+Future directions include:
+- Multi-agent manipulation
+- Vision-language integration
+- Foundation model pretraining for tool-use and generalization
+
+---
+
+For collaboration or citation, please contact the authors. Licensed under MIT.
